@@ -13,4 +13,9 @@ public class Player : MonoBehaviour
         public int strength;
         public int energy;
         
+        public bool TakeDamage(int dmg)
+        {
+                currentHealth -= dmg;
+                return currentHealth <= 0;
+        }
 }
