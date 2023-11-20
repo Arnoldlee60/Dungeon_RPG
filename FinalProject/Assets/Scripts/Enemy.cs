@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     public string unitName;
     public int damage;
     public int block;
+    public int strength;
+    public string status;
     //public TMP_Text healthText; // Reference to the TextMeshPro Text component
     public bool TakeDamage(int dmg)
     {

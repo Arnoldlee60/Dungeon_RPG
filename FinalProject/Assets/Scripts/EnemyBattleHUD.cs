@@ -7,18 +7,44 @@ public class EnemyBattleHUD : MonoBehaviour
 {
     public Text enemyHP;
     public Text enemyBlock;
+    public Text enemyStrength;
+    public Text enemyStatus;
 
     public void setHUD(Enemy enemyUnit)
     {
         enemyHP.text =  enemyUnit.unitName + " hp: " + enemyUnit.currentHealth + "/" + enemyUnit.maxHealth;
         enemyBlock.text = "";
+        enemyStrength.text = "";
+        enemyStatus.text = "";
+
         if(enemyUnit.block > 0)
         {
             enemyBlock.text = "Block: " + enemyUnit.block + "\n";
         }
+
+        if(enemyUnit.strength > 0)
+        {
+            enemyStrength.text = "Str: " + enemyUnit.strength + "\n";
+        }
+
+        if(enemyUnit.status != "")
+        {
+            enemyBlock.text = "Status WIP";
+        }
     }
-    public void setHP(int hp)
+    public void setHP(int hp, Enemy enemyUnit)
     {
-        enemyHP.text = "" + hp;
+        enemyHP.text = enemyUnit.unitName + " hp: " + enemyUnit.currentHealth + "/" + enemyUnit.maxHealth;
+    }
+    public void setStr(int str, Enemy enemyUnit)
+    {
+        enemyUnit.strength += str;
+
+        enemyStrength.text = "Str: " + enemyUnit.strength;
+    }
+    public void setStatus(string status, Enemy enemyUnit)
+    {
+        enemyUnit.status = status;
+        enemyStatus.text = enemyUnit.status;
     }
 }

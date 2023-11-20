@@ -52,6 +52,8 @@ MonoBehaviour:
   damage: 1
   strength: 0
   energy: 3
+  maxEnergy: 3
+  block: 0
 --- !u!1001 &7674062987238871780
 PrefabInstance:
   m_ObjectHideFlags: 0

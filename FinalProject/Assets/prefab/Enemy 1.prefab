@@ -48,7 +48,7 @@ MonoBehaviour:
   currentHealth: 5
   maxHealth: 5
   unitName: Slime
-  damage: 1
+  damage: 0
   block: 0
 --- !u!1001 &8864778279477571524
 PrefabInstance:

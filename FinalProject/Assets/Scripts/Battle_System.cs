@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public enum Battle_State { START, PLAYERTURN, ENEMYTURN, WON, LOST }
@@ -25,6 +26,8 @@ public class Battle_System : MonoBehaviour
 
     public Text dialogueText;
 
+    int turnCounter = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,32 +35,13 @@ public class Battle_System : MonoBehaviour
         StartCoroutine(SetupBattle());
 
         dialogueText.text = "A wild " + enemyUnit.unitName + " appears!";
+        //Debug.Log("Player Level: " + PlayerStats.level);
     }
 
     void Update()
     {
 
     }
-    
-    // void HUD()
-    // {
-    //     //dialogueText.text = "The enemy " + enemyUnit.maxHealth;
-    //     playerHP.text = playerUnit.unitName + " hp: " + playerUnit.currentHealth + "/" + playerUnit.maxHealth;
-    //     playerEnergy.text = "Energy: " + playerUnit.energy;
-    //     //Make if statements to add onto status effects 
-    //     playerStatus.text = "";
-    //     if(playerUnit.strength != 0)
-    //     {
-    //         playerStatus.text += "STR: " + playerUnit.strength +"\n";
-    //     }
-
-    //     enemyHP.text =  enemyUnit.unitName + " hp: " + enemyUnit.currentHealth + "/" + enemyUnit.maxHealth;
-    //     enemyBlock.text = "";
-    //     if(enemyUnit.block > 0)
-    //     {
-    //         enemyBlock.text = "Block: " + enemyUnit.block + "\n";
-    //     }
-    // }
 
     IEnumerator SetupBattle()
     {
@@ -66,6 +50,8 @@ public class Battle_System : MonoBehaviour
 
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Enemy>();
+
+        playerUnit.setStats();
 
         PlayerHUD.setHUD(playerUnit);
         EnemyHUD.setHUD(enemyUnit);
@@ -78,7 +64,8 @@ public class Battle_System : MonoBehaviour
     IEnumerator PlayerAttack()
     {
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-        EnemyHUD.setHP(enemyUnit.currentHealth);
+        EnemyHUD.setHP(enemyUnit.currentHealth, enemyUnit);
+        PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
         dialogueText.text = "Player attacks for: " + playerUnit.damage + " Damage!";
 
         yield return new WaitForSeconds(2f);
@@ -90,22 +77,37 @@ public class Battle_System : MonoBehaviour
             state = Battle_State.WON;
             EndBattle();
         }
-        else
-        {
-            //change turn
-            state = Battle_State.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
     }
 
-    IEnumerator EnemyTurn()
+    IEnumerator PlayerBlock()
     {
-        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
-        PlayerHUD.setHP(playerUnit.currentHealth);
+        PlayerHUD.setBlock(5, playerUnit);
+        PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
+        dialogueText.text = "Player blocks for: " + 5 +"!";
 
-        dialogueText.text = enemyUnit.unitName + " attacks!";
+        yield return new WaitForSeconds(2f);
+    }
 
-        yield return new WaitForSeconds(1f);
+    IEnumerator SlimeTurn()
+    {
+        bool isDead = false; //playerUnit.TakeDamage(enemyUnit.damage + turnCounter);
+        // PlayerHUD.setHP(playerUnit.currentHealth, playerUnit);
+
+        // Debug.Log(turnCounter);
+        if(turnCounter == 1)
+        {
+            EnemyHUD.setStatus(enemyUnit.unitName + " will now gain strength every turn!", enemyUnit);
+        }
+        else
+        {
+            dialogueText.text = enemyUnit.unitName + " gains 5 Strength and attacks!";
+            EnemyHUD.setStr(2, enemyUnit);
+            isDead = playerUnit.TakeDamage(enemyUnit);
+        }
+
+        PlayerHUD.setHP(playerUnit.currentHealth, playerUnit);
+
+        yield return new WaitForSeconds(2f);
 
         if(isDead)
         {
@@ -119,24 +121,34 @@ public class Battle_System : MonoBehaviour
             state = Battle_State.PLAYERTURN;
             PlayerTurn();
         }
-
-        
     }
 
     void PlayerTurn()
     {
         dialogueText.text = "Choose an action: ";
+        turnCounter++;
+        PlayerHUD.setEnergy(playerUnit.maxEnergy, playerUnit);
+        PlayerHUD.setBlock(playerUnit.block * -1, playerUnit); //block goes to zero starting turn
     }
+    
 
     void EndBattle()
     {
+        playerUnit.updateStats(playerUnit.level, playerUnit.currentHealth, playerUnit.maxHealth, playerUnit.damage, playerUnit.strength, playerUnit.energy, playerUnit.maxEnergy);
+
         if(state == Battle_State.WON)
         {
             dialogueText.text = "You win the battle";
+
+            //yield return new WaitForSeconds(5f);
+            SceneManager.LoadScene("Event");
         }
         else if(state == Battle_State.LOST)
         {
             dialogueText.text = "You lost";
+
+            //yield return new WaitForSeconds(5f);
+            SceneManager.LoadScene("Main");
         }
     }
 
@@ -146,7 +158,48 @@ public class Battle_System : MonoBehaviour
         {
             return;
         }
-        
-        StartCoroutine(PlayerAttack());
+        if(playerUnit.energy > 0)
+        {
+            StartCoroutine(PlayerAttack());
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public void OnBlockButton()
+    {
+        if(state != Battle_State.PLAYERTURN)
+        {
+            return;
+        }
+        if(playerUnit.energy > 0)
+        {
+            StartCoroutine(PlayerBlock());
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public void End_Turn()
+    {
+            //change turn
+            state = Battle_State.ENEMYTURN;
+            if(enemyUnit.unitName == "Slime")
+            {
+                StartCoroutine(SlimeTurn());
+            }
+            else if(enemyUnit.unitName == "Other Enemy")
+            {
+                
+            }
+            else
+            {
+                Debug.Log("Enemy AI messed up!");
+            }
+
     }
 }

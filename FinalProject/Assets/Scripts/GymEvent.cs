@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class Gym_Event : MonoBehaviour
 {
@@ -53,9 +55,11 @@ public class Gym_Event : MonoBehaviour
         playerUnit.strength = 1;
     }
 
-    void OnCardioButtonClick()
+    public void OnCardioButtonClick()
     {
         // Handle the Cardio button click here
+        SceneManager.LoadScene("Battle");
+
     }
 
     void OnYogaButtonClick()

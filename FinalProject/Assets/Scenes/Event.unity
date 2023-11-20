@@ -798,12 +798,9 @@ MonoBehaviour:
   enemyPrefab: {fileID: 7408587301859714625, guid: 9196c408538c20c46a6e23c5f210d010, type: 3}
   playerBattleStation: {fileID: 1750357423}
   enemyBattleStation: {fileID: 0}
+  PlayerHUD: {fileID: 0}
+  EnemyHUD: {fileID: 0}
   dialogueText: {fileID: 1646757968}
-  playerHP: {fileID: 723782770}
-  playerEnergy: {fileID: 1168632838}
-  playerStatus: {fileID: 1862304691}
-  enemyHP: {fileID: 0}
-  enemyBlock: {fileID: 0}
 --- !u!4 &1252708542
 Transform:
   m_ObjectHideFlags: 0
@@ -1255,7 +1252,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1506653956}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1663793008}
+        m_TargetAssemblyTypeName: Gym_Event, Assembly-CSharp
+        m_MethodName: OnCardioButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1506653956
 MonoBehaviour:
   m_ObjectHideFlags: 0
