@@ -22,29 +22,31 @@ public class Gym_Event : MonoBehaviour
     public Button liftButton;
     public Button cardioButton;
     public Button yogaButton;
+    public Button nextScene;
+
+    public PlayerBattleHUD PlayerHUD;
 
     // Start is called before the first frame update
     void Start()
     {
-        GymEvent();
-    }
+        StartCoroutine(GymEvent());
 
-    void Update()
-    {
-        dialogueText.text = "You arrive at the Gym. What will you do? Lift(Strength) or Cardio(Max HP +10)";
-        playerHP.text = playerUnit.unitName + " hp: " + playerUnit.currentHealth + "/" + playerUnit.maxHealth;
-        playerEnergy.text = "Energy: " + playerUnit.energy;
-        //Make if statements to add onto status effects 
-        playerStatus.text = "";
         if(playerUnit.strength != 0)
         {
-            playerStatus.text += "STR: " + playerUnit.strength +"\n";
+            playerStatus.text = "Strength: " + playerUnit.strength +"\n";
         }
     }
-    void GymEvent()
+
+    IEnumerator GymEvent()
     {
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
         playerUnit = playerGO.GetComponent<Player>();
+
+        playerUnit.setStats();
+
+        PlayerHUD.setHUD(playerUnit);
+
+        yield return new WaitForSeconds(2f);
     }
 
     // Define the button click functions
@@ -52,18 +54,76 @@ public class Gym_Event : MonoBehaviour
     {
         // Handle the Lift button click here
         // playerUnit.strength += 2;
-        playerUnit.strength = 1;
+        //playerUnit.gainStr();
+
+        if(playerUnit.energy > 0)
+        {
+            StartCoroutine(PlayerStrength());
+            PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
+        }
+        else{
+            dialogueText.text = "Not enough energy!";
+        }
     }
 
     public void OnCardioButtonClick()
     {
         // Handle the Cardio button click here
-        SceneManager.LoadScene("Battle");
+
+        if(playerUnit.energy > 0)
+        {
+            StartCoroutine(PlayerMaxEnergyGain());
+            PlayerHUD.setEnergy(playerUnit.energy - 2, playerUnit);
+        }
+        else{
+            dialogueText.text = "Not enough energy!";
+        }
 
     }
 
-    void OnYogaButtonClick()
+    public void OnYogaButtonClick()
     {
         // Handle the Yoga button click here
+        if(playerUnit.energy > 0)
+        {
+            StartCoroutine(PlayerMaxHealth());
+            PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
+        }
+        else{
+            dialogueText.text = "Not enough energy!";
+        }
+    }
+
+    IEnumerator PlayerStrength()
+    {
+        PlayerHUD.setStr(5, playerUnit);
+        dialogueText.text = "Player gains Strength: " + playerUnit.strength + "!";
+        playerUnit.gainStr();
+
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator PlayerMaxEnergyGain()
+    {
+        PlayerHUD.setMaxEnergy(1, playerUnit);
+        dialogueText.text = "Player Max Energy is now: " + playerUnit.maxEnergy + "!";
+        playerUnit.gainMaxEnergy();
+
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator PlayerMaxHealth()
+    {
+        PlayerHUD.setMaxHP(5, playerUnit);
+        dialogueText.text = "Player gains max hp: " + playerUnit.maxHealth + " total hp!";
+        playerUnit.gainMaxHp();
+
+        yield return new WaitForSeconds(2f);
+    }
+
+    public void nextSceneEnd()
+    {
+        PlayerStats.roomCounter++;
+        SceneManager.LoadScene("Battle");
     }
 }

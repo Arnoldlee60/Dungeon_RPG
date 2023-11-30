@@ -24,7 +24,7 @@ public class EnemyBattleHUD : MonoBehaviour
 
         if(enemyUnit.strength > 0)
         {
-            enemyStrength.text = "Str: " + enemyUnit.strength + "\n";
+            enemyStrength.text = "Strength: " + enemyUnit.strength + "\n";
         }
 
         if(enemyUnit.status != "")
@@ -40,11 +40,17 @@ public class EnemyBattleHUD : MonoBehaviour
     {
         enemyUnit.strength += str;
 
-        enemyStrength.text = "Str: " + enemyUnit.strength;
+        enemyStrength.text = "Strength: " + enemyUnit.strength;
     }
     public void setStatus(string status, Enemy enemyUnit)
     {
         enemyUnit.status = status;
         enemyStatus.text = enemyUnit.status;
+    }
+    public void setBlock(int val, Enemy enemyUnit)
+    {
+        enemyUnit.block = val;
+
+        enemyBlock.text = "Block: " + enemyUnit.block;
     }
 }

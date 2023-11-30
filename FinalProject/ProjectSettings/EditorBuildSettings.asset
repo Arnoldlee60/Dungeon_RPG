@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Event.unity
     guid: 8033eda4fe47d6a408bab87c23e2f1ce
+  - enabled: 1
+    path: Assets/Scenes/Healing Event.unity
+    guid: b4107d7929cd7d44a9402093793c221c
   m_configObjects: {}

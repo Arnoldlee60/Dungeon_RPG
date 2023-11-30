@@ -13,7 +13,8 @@ public class Battle_System : MonoBehaviour
     public Battle_State state;
 
     public GameObject playerPrefab;
-    public GameObject enemyPrefab;
+    public GameObject[] enemyPrefab;
+    public GameObject enemyPrefabBoss;
 
     public Transform playerBattleStation;
     public Transform enemyBattleStation;
@@ -32,7 +33,9 @@ public class Battle_System : MonoBehaviour
     void Start()
     {
         state = Battle_State.START;
-        StartCoroutine(SetupBattle());
+
+
+            StartCoroutine(SetupBattle());
 
         dialogueText.text = "A wild " + enemyUnit.unitName + " appears!";
         //Debug.Log("Player Level: " + PlayerStats.level);
@@ -48,10 +51,14 @@ public class Battle_System : MonoBehaviour
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
         playerUnit = playerGO.GetComponent<Player>();
 
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
+        //GameObject enemyGO = Instantiate(enemyPrefab[PlayerStats.monsterEncounters], enemyBattleStation); //monsters by number of encounters
+        //GameObject enemyGO = Instantiate(enemyPrefab[0], enemyBattleStation);
+
+        GameObject enemyGO = Instantiate(enemyPrefab[Random.Range(0, enemyPrefab.Length)], enemyBattleStation); //random monster 
         enemyUnit = enemyGO.GetComponent<Enemy>();
 
         playerUnit.setStats();
+        enemyUnit.setStats(PlayerStats.monsterEncounters);
 
         PlayerHUD.setHUD(playerUnit);
         EnemyHUD.setHUD(enemyUnit);
@@ -63,10 +70,23 @@ public class Battle_System : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        bool isDead = enemyUnit.TakeDamage(playerUnit.damageFormula());
+
+        if(playerUnit.relic == "Double Attack")
+        {
+            isDead = enemyUnit.TakeDamage(playerUnit.damageFormula());
+
+            EnemyHUD.setHP(enemyUnit.currentHealth, enemyUnit);
+            PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
+            dialogueText.text = "Player attacks for: " + playerUnit.damageFormula() + " Damage! Twice";
+        }
+        else
+        {
         EnemyHUD.setHP(enemyUnit.currentHealth, enemyUnit);
         PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
-        dialogueText.text = "Player attacks for: " + playerUnit.damage + " Damage!";
+        dialogueText.text = "Player attacks for: " + playerUnit.damageFormula() + " Damage!";
+        }
+
 
         yield return new WaitForSeconds(2f);
         //check if enemy dead
@@ -123,6 +143,42 @@ public class Battle_System : MonoBehaviour
         }
     }
 
+    IEnumerator MushroomTurn()
+    {
+        bool isDead = false; 
+        
+        if(turnCounter % 2 != 0)
+        {
+            EnemyHUD.setBlock(10, enemyUnit);
+            EnemyHUD.setStatus(enemyUnit.unitName + " blocks for 10! You must deal more than 10 damage in order to hurt this enemy!", enemyUnit);
+            dialogueText.text = enemyUnit.unitName + " blocks for 10!";
+        }
+        else
+        {
+            EnemyHUD.setBlock(0, enemyUnit);
+            EnemyHUD.setStatus("", enemyUnit);
+            dialogueText.text = enemyUnit.unitName + " attacks!";
+            isDead = playerUnit.TakeDamage(enemyUnit);
+        }
+
+        PlayerHUD.setHP(playerUnit.currentHealth, playerUnit);
+
+        yield return new WaitForSeconds(2f);
+
+        if(isDead)
+        {
+            //next scene
+            state = Battle_State.LOST;
+            EndBattle();
+        }
+        else
+        {
+            //change turn
+            state = Battle_State.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
+
     void PlayerTurn()
     {
         dialogueText.text = "Choose an action: ";
@@ -134,17 +190,28 @@ public class Battle_System : MonoBehaviour
 
     void EndBattle()
     {
-        playerUnit.updateStats(playerUnit.level, playerUnit.currentHealth, playerUnit.maxHealth, playerUnit.damage, playerUnit.strength, playerUnit.energy, playerUnit.maxEnergy);
+        playerUnit.updateStats(playerUnit.level, playerUnit.currentHealth, playerUnit.maxHealth, playerUnit.damage, playerUnit.strength, playerUnit.energy, playerUnit.maxEnergy, playerUnit.relic);
+        PlayerStats.roomCounter++;
+        PlayerStats.monsterEncounters++;
 
         if(state == Battle_State.WON)
         {
             dialogueText.text = "You win the battle";
 
             //yield return new WaitForSeconds(5f);
-            SceneManager.LoadScene("Event");
+
+            if(PlayerStats.monsterEncounters % 2 == 0)
+            {
+                SceneManager.LoadScene("Event");
+            }
+            else
+            {
+                SceneManager.LoadScene("Healing Event");
+            }
         }
         else if(state == Battle_State.LOST)
         {
+            PlayerStats.Reset();
             dialogueText.text = "You lost";
 
             //yield return new WaitForSeconds(5f);
@@ -192,9 +259,9 @@ public class Battle_System : MonoBehaviour
             {
                 StartCoroutine(SlimeTurn());
             }
-            else if(enemyUnit.unitName == "Other Enemy")
+            else if(enemyUnit.unitName == "Mushroom")
             {
-                
+                StartCoroutine(MushroomTurn());
             }
             else
             {

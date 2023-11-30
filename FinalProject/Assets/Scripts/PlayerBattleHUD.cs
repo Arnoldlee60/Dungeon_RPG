@@ -9,6 +9,7 @@ public class PlayerBattleHUD : MonoBehaviour
     public Text playerEnergy;
     public Text playerStatus;
     public Text playerBlock;
+    public Text playerRelic;
     
     void Awake()
     {
@@ -19,18 +20,27 @@ public class PlayerBattleHUD : MonoBehaviour
     {
         playerHP.text = playerUnit.unitName + " hp: " + playerUnit.currentHealth + "/" + playerUnit.maxHealth;
         playerEnergy.text = "Energy: " + playerUnit.energy;
-
-        //Make if statements to add onto status effects 
-        playerStatus.text = "";
-        if(playerUnit.strength != 0)
-        {
-            playerStatus.text += "STR: " + playerUnit.strength +"\n";
-        }
+        playerStatus.text = "Strength: " + playerUnit.strength;
+        playerBlock.text = "Block: " + playerUnit.block;
+        playerRelic.text = "Relic: " + playerUnit.relic;
     }
     public void setHP(int hp, Player playerUnit)
     {
         playerHP.text = playerUnit.unitName + " hp: " + hp + "/" + playerUnit.maxHealth;
     }
+
+    public void setMaxHP(int hp, Player playerUnit)
+    {
+        playerUnit.maxHealth += hp;
+        playerHP.text = playerUnit.unitName + " hp: " + playerUnit.currentHealth + "/" + playerUnit.maxHealth;
+    }
+
+    public void setHPFull(Player playerUnit)
+    {
+        playerUnit.currentHealth = playerUnit.maxHealth;
+        playerHP.text = playerUnit.unitName + " hp: " + playerUnit.currentHealth + "/" + playerUnit.maxHealth;
+    }
+
     public void setEnergy(int energy, Player playerUnit)
     {
         playerUnit.energy = energy;
@@ -40,5 +50,23 @@ public class PlayerBattleHUD : MonoBehaviour
     {
         playerUnit.block += block;
         playerBlock.text = "Block: " + playerUnit.block;
+    }
+
+    public void setStr(int str, Player playerUnit)
+    {
+        playerUnit.strength += str;
+        playerStatus.text = "Strength: " + playerUnit.strength;
+    }
+
+    public void setMaxEnergy(int en, Player playerUnit)
+    {
+        playerUnit.energy += en;
+        playerUnit.maxEnergy += en;
+    }
+
+    public void setBlessing(string blessing,Player playerUnit)
+    {
+        playerUnit.relic = blessing;
+        playerRelic.text = "Relic: " + playerUnit.relic;
     }
 }

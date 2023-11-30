@@ -15,8 +15,25 @@ public class Enemy : MonoBehaviour
     //public TMP_Text healthText; // Reference to the TextMeshPro Text component
     public bool TakeDamage(int dmg)
     {
-        currentHealth -= dmg;
+        if(dmg > block)
+        {
+            currentHealth -= dmg;
+        }
+
+        block = 0;
         
         return currentHealth <= 0;
+    }
+
+    public void SetBlock(int val)
+    {
+        block = val;
+    }
+
+    public void setStats(int val)
+    {
+        currentHealth += val;
+        maxHealth += val;
+        damage += val;
     }
 }
