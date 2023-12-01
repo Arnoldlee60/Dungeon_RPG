@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6509558639396382418}
   - component: {fileID: 1703285355459888012}
+  - component: {fileID: -8363952543998632435}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -52,6 +53,27 @@ MonoBehaviour:
   block: 0
   strength: 0
   status: 
+--- !u!95 &-8363952543998632435
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8948745704811894953}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 011d5a8af8106d84da7248ea36a4738c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2712359636211500329
 PrefabInstance:
   m_ObjectHideFlags: 0

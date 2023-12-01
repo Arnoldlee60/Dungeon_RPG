@@ -26,6 +26,11 @@ public class Gym_Event : MonoBehaviour
 
     public PlayerBattleHUD PlayerHUD;
 
+    public AudioSource source;
+    public AudioClip lift;
+    public AudioClip yoga;
+    public AudioClip cardio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +40,7 @@ public class Gym_Event : MonoBehaviour
         {
             playerStatus.text = "Strength: " + playerUnit.strength +"\n";
         }
+        dialogueText.text = "Welcome to the Gym! Lift to gain Strength, Cardio to gain Max Energy, and Yoga to gain Max Health.";
     }
 
     IEnumerator GymEvent()
@@ -100,6 +106,8 @@ public class Gym_Event : MonoBehaviour
         dialogueText.text = "Player gains Strength: " + playerUnit.strength + "!";
         playerUnit.gainStr();
 
+        source.PlayOneShot(lift);
+
         yield return new WaitForSeconds(2f);
     }
 
@@ -109,6 +117,8 @@ public class Gym_Event : MonoBehaviour
         dialogueText.text = "Player Max Energy is now: " + playerUnit.maxEnergy + "!";
         playerUnit.gainMaxEnergy();
 
+        source.PlayOneShot(cardio);
+
         yield return new WaitForSeconds(2f);
     }
 
@@ -117,6 +127,8 @@ public class Gym_Event : MonoBehaviour
         PlayerHUD.setMaxHP(5, playerUnit);
         dialogueText.text = "Player gains max hp: " + playerUnit.maxHealth + " total hp!";
         playerUnit.gainMaxHp();
+
+        source.PlayOneShot(yoga);
 
         yield return new WaitForSeconds(2f);
     }

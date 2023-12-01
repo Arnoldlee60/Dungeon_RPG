@@ -26,6 +26,10 @@ public class Healing_Event : MonoBehaviour
 
     public PlayerBattleHUD PlayerHUD;
 
+    public AudioSource source;
+    public AudioClip Healing;
+    public AudioClip Give_Blessing;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +39,8 @@ public class Healing_Event : MonoBehaviour
         {
             playerStatus.text += "Strength: " + playerUnit.strength +"\n";
         }
+
+        dialogueText.text = "You approach a shrine. Heal to full or recieve a blessing?";
     }
 
     public void OnHealButton()
@@ -83,6 +89,8 @@ public class Healing_Event : MonoBehaviour
         PlayerHUD.setHPFull(playerUnit);
         playerUnit.gainCurrentHealth();
 
+        source.PlayOneShot(Healing);
+
         yield return new WaitForSeconds(2f);
     }
 
@@ -93,6 +101,8 @@ public class Healing_Event : MonoBehaviour
 
         PlayerHUD.setBlessing(randomBlessing ,playerUnit);
         playerUnit.gainBlessing();
+
+        source.PlayOneShot(Give_Blessing);
 
         yield return new WaitForSeconds(2f);
     }

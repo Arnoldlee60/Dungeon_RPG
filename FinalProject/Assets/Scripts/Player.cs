@@ -27,6 +27,12 @@ public class Player : MonoBehaviour
                 return currentHealth <= 0;
         }
 
+        public bool TakeDiceDamage(int dmg)
+        {
+                currentHealth -= dmg;
+                return currentHealth <= 0;
+        }
+
         public void setStats()
         {
                 level = PlayerStats.level;

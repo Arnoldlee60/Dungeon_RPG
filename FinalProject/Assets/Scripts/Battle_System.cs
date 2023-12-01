@@ -29,6 +29,10 @@ public class Battle_System : MonoBehaviour
 
     int turnCounter = 0;
 
+    public AudioSource source;
+    public AudioClip Attack;
+    public AudioClip Block;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +76,8 @@ public class Battle_System : MonoBehaviour
     {
         bool isDead = enemyUnit.TakeDamage(playerUnit.damageFormula());
 
+            source.PlayOneShot(Attack);
+
         if(playerUnit.relic == "Double Attack")
         {
             isDead = enemyUnit.TakeDamage(playerUnit.damageFormula());
@@ -79,6 +85,8 @@ public class Battle_System : MonoBehaviour
             EnemyHUD.setHP(enemyUnit.currentHealth, enemyUnit);
             PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
             dialogueText.text = "Player attacks for: " + playerUnit.damageFormula() + " Damage! Twice";
+
+            source.PlayOneShot(Attack);
         }
         else
         {
@@ -104,6 +112,8 @@ public class Battle_System : MonoBehaviour
         PlayerHUD.setBlock(5, playerUnit);
         PlayerHUD.setEnergy(playerUnit.energy - 1, playerUnit);
         dialogueText.text = "Player blocks for: " + 5 +"!";
+
+        source.PlayOneShot(Block);
 
         yield return new WaitForSeconds(2f);
     }
@@ -157,10 +167,38 @@ public class Battle_System : MonoBehaviour
         {
             EnemyHUD.setBlock(0, enemyUnit);
             EnemyHUD.setStatus("", enemyUnit);
-            dialogueText.text = enemyUnit.unitName + " attacks!";
+            dialogueText.text = enemyUnit.unitName + " attacks for " + enemyUnit.damage + "!";
             isDead = playerUnit.TakeDamage(enemyUnit);
         }
 
+        PlayerHUD.setHP(playerUnit.currentHealth, playerUnit);
+
+        yield return new WaitForSeconds(2f);
+
+        if(isDead)
+        {
+            //next scene
+            state = Battle_State.LOST;
+            EndBattle();
+        }
+        else
+        {
+            //change turn
+            state = Battle_State.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
+
+    IEnumerator DiceMonsterTurn()
+    {
+        bool isDead = false; 
+        
+        int dice_roll = Random.Range(1, 7);
+
+        EnemyHUD.setStatus(enemyUnit.unitName + " rolls a " + dice_roll + "!", enemyUnit);
+        dialogueText.text = enemyUnit.unitName + " attacks for " + dice_roll + "!";
+        isDead = playerUnit.TakeDiceDamage(dice_roll);
+        
         PlayerHUD.setHP(playerUnit.currentHealth, playerUnit);
 
         yield return new WaitForSeconds(2f);
@@ -262,6 +300,10 @@ public class Battle_System : MonoBehaviour
             else if(enemyUnit.unitName == "Mushroom")
             {
                 StartCoroutine(MushroomTurn());
+            }
+            else if(enemyUnit.unitName == "Dice Monster")
+            {
+                StartCoroutine(DiceMonsterTurn());
             }
             else
             {

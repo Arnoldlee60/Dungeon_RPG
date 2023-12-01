@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2793601741816822054}
   - component: {fileID: 5506752567561319456}
+  - component: {fileID: -862928599644001128}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Player
@@ -54,6 +55,28 @@ MonoBehaviour:
   energy: 3
   maxEnergy: 3
   block: 0
+  relic: 
+--- !u!95 &-862928599644001128
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427155977488291858}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 547c594647b15c14190e7d8f05114d84, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &7674062987238871780
 PrefabInstance:
   m_ObjectHideFlags: 0

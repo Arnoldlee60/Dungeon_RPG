@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5952783236874051518}
   - component: {fileID: 3310092313781516324}
   m_Layer: 0
-  m_Name: Slime
+  m_Name: Dice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef24b5bfba6b64bb8b3ff9c3dc2db4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 5
-  maxHealth: 5
-  unitName: Slime
+  currentHealth: 10
+  maxHealth: 10
+  unitName: Dice Monster
   damage: 0
   block: 0
   strength: 0
@@ -82,6 +82,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4937383424873906065}
     m_Modifications:
+    - target: {fileID: 869920326278659507, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f8a7ccacffb6a2842990a36c203dcc63, type: 3}
+    - target: {fileID: 2812039035590651158, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812039035590651158, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812039035590651158, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2812039035590651158, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -124,14 +140,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6300315259701437496, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
       propertyPath: m_Name
-      value: Slime
+      value: Dice
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7736144505076899600, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6300315259701437496, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7765451137263892633}
   m_SourcePrefab: {fileID: 100100000, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
+--- !u!1 &3200145882228050940 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6300315259701437496, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
+  m_PrefabInstance: {fileID: 8864778279477571524}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7765451137263892633
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3200145882228050940}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 55439f5437f1b9d428822f5ff95f4ebd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &6629398131692946130 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2812039035590651158, guid: 9d49751c42bbabe4db01735882bad3e1, type: 3}
