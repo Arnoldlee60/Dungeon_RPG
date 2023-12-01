@@ -29,6 +29,12 @@ public class Player : MonoBehaviour
 
         public bool TakeDiceDamage(int dmg)
         {
+                dmg -= block;
+                if(dmg < 0)
+                {
+                        dmg = 0;
+                }
+
                 currentHealth -= dmg;
                 return currentHealth <= 0;
         }

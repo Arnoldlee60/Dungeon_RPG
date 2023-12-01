@@ -130,7 +130,7 @@ public class Battle_System : MonoBehaviour
         }
         else
         {
-            dialogueText.text = enemyUnit.unitName + " gains 5 Strength and attacks!";
+            dialogueText.text = enemyUnit.unitName + " gains 2 Strength and attacks!";
             EnemyHUD.setStr(2, enemyUnit);
             isDead = playerUnit.TakeDamage(enemyUnit);
         }
