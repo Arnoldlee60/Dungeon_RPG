@@ -43,7 +43,7 @@ Dungeon RPG is a turn-based RPG where players grow stronger by battling monsters
 
 ### 7. Optimization and Design Patterns
 - **Optimization Pattern:** Spatial Partitioning
-  - Utilized in "baƩle_systems.cs," "GymEvent.cs," and "HealingEvent.cs."
+  - Utilized in "battle_systems.cs," "GymEvent.cs," and "HealingEvent.cs."
 - **Design Pattern:** State
   - Implemented in "baƩle_systems.cs" for turn-based combat.
 
